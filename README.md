@@ -7,7 +7,7 @@
 </h1>
 
 <p align="center">
-    Discord leveling made easy!
+    Discord leveling made easy
 </p>
 
 </p>
