@@ -39,11 +39,12 @@
 <h2>Setup leveling system</h2>
 <p>
   1. Requires python version 3.10.1</a><br/>
-  2. Install PostgreSQL</a><br/>
-  3. Create database named levels</a><br/>
-  4. Rename `.example_env--` to `.env`</a><br/>
-  5. In .env paste your bot token where `TOKEN=`</a><br/>
-  6. In .env paste your PgAdmin 4 password where `PASSWORD=`</a><br/>
+  2. Run `python3 -m pip install -r requirements.txt` in your terminal</a><br/>
+  3. Install PostgreSQL</a><br/>
+  4. Create database named levels</a><br/>
+  5. Rename `.example_env--` to `.env`</a><br/>
+  6. In .env paste your bot token where `TOKEN=`</a><br/>
+  7. In .env paste your PgAdmin 4 password where `PASSWORD=`</a><br/>
 </p>
 
 <h2>How to download PostgreSQL</h2>
