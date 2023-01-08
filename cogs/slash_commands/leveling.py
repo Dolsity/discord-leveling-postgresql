@@ -1,22 +1,25 @@
-from discord import File, Member
-from discord.ext import commands
-from easy_pil import Editor, load_image_async, Font, Canvas
-from PIL import Image ,ImageDraw ,ImageFont, ImageDraw
-from databases.levels import *
+from nextcord import File, Member, Interaction
+from nextcord.ext import commands
+from nextcord import slash_command
+from easy_pil import Editor, load_image_async, Font
+from utils import get_user_data_guild
 
-class Level(commands.Cog):
-    def __init__(self, bot) -> None:
+class Slash_Leveling(commands.Cog):
+    def __init__(self, bot):
         self.bot = bot
 
     # Check your rank
-    @commands.command()
-    async def ranktest(self, ctx, member: Member = None):
+    @slash_command(
+        name="rank", description="Check your rank"
+    )
+    async def rank(self, interaction : Interaction, member: Member = None):
+
+        await interaction.response.defer()
+
         if not member:
-            member = ctx.author
+            member = interaction.user
 
-        await ctx.trigger_typing()
-
-        user_data = await get_user_data_guild(self.bot.db, member.id, ctx.guild.id)
+        user_data = await get_user_data_guild(self.bot.db, member.id, interaction.guild.id)
         # rank = await get_rank(self.bot.db, member.id, ctx.guild.id) # in case of using rank
 
         next_level_xp = (user_data["level"] + 1) * 100
@@ -27,8 +30,8 @@ class Level(commands.Cog):
         percentage = (xp_need / 100) * xp_have
 
         ## Rank card
-        background = Editor("assets/14.jpg")
-        profile = await load_image_async(str(member.avatar_url))
+        background = Editor("data/images/image.jpg")
+        profile = await load_image_async(str(member.display_avatar))
 
         profile = Editor(profile).resize((150, 150)).circle_image()
 
@@ -56,9 +59,8 @@ class Level(commands.Cog):
             font=poppins_small,
             color="white",
         )
-
         file = File(fp=background.image_bytes, filename="card.png")
-        await ctx.send(file=file)
+        await interaction.followup.send(file=file)
 
 def setup(bot):
-    bot.add_cog(Level(bot))
+    bot.add_cog(Slash_Leveling(bot))

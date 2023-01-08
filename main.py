@@ -1,27 +1,17 @@
-import os
+from os import getenv
 from dotenv import load_dotenv
 import asyncpg
-from discord.ext import commands, ipc
-from databases.levels import *
-import logging
-import discord
+from nextcord.ext import commands
+from utils import increase_xp_guild, create_tables, bot_owner_ids, bot_prefix
+import nextcord
+from nextcord import Intents
+from extensions import initial_extensions
 
-class Fora(commands.Bot):
+    
+class Bot(commands.Bot):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
 
-        self.ipc = ipc.Server(self,secret_key = "Swas")
-
-    # Greetings
-    async def on_ready(self):
-        print(f'Logged in as {bot.user} ({bot.user.id} | In {len(bot.guilds)} guilds')
-
-        # Loads all /commands
-        for filename in os.listdir('./commands'):
-            if filename.endswith('.py'):
-                bot.load_extension(f'commands.{filename[: -3]}')
-
-    # Guild opn message XP
     async def on_message(self, message):
         await self.process_commands(message)
 
@@ -30,29 +20,32 @@ class Fora(commands.Bot):
 
         await increase_xp_guild(self.db, message)
 
-owners = [795969792778698763] # 753869504009863275
+intents = nextcord.Intents.default()
+intents.members = True
+intents.message_content = True # Unmark for ragular commands
 
-bot = Fora(command_prefix=".")
+
+bot = Bot(command_prefix=bot_prefix, owner_ids = set(bot_owner_ids), intents=intents, case_insensitive=True)
+
+@bot.event
+async def on_ready():
+    print(
+        f'Logged in as {bot.user} ({bot.user.id}) ({nextcord.__version__})'
+    )
 
 # Database ready
 async def connect_db():
     load_dotenv()
-    password = os.getenv('PASSWORD')
-    database_name = os.getenv('DATABASE_NAME')
-    database_user = os.getenv('DATABASE_USER')
+    password = getenv('PASSWORD')
+    database_name = getenv('DATABASE_NAME')
+    database_user = getenv('DATABASE_USER')
     bot.db = await asyncpg.create_pool(database = database_name, user = database_user, password = password)
     await create_tables(bot.db)
     print(f'Database connected')
 
-# Logging
-logger = logging.getLogger('discord')
-logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
-handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-logger.addHandler(handler)
+if __name__ == '__main__':
+    for extension in initial_extensions:
+        bot.load_extension(extension)
 
-# Loading data from .env file
-load_dotenv()
-token = os.getenv('TOKEN')
 bot.loop.run_until_complete(connect_db())
-bot.run(token, reconnect=True)
+bot.run(getenv('TOKEN'), reconnect=True)

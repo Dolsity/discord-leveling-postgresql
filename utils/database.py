@@ -1,5 +1,4 @@
 from asyncpg import Pool
-from discord.ext import commands
 
 async def create_tables(pool: Pool):
     async with pool.acquire() as connection:
