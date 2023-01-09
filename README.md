@@ -39,20 +39,18 @@
     <a href="https://github.com/dolsity/discord-leveling/issues/new/choose">Request Feature</a>
 </p>
 
-<h2>Setup leveling system</h2>
-<p>
-  1. Requires python version 3.10.1</a><br/>
-  2. Run `python3 -m pip install -r requirements.txt` in your terminal</a><br/>
-  3. Install PostgreSQL</a><br/>
-  4. Create database named levels</a><br/>
-  5. Rename `.example_env--` to `.env`</a><br/>
-  6. In .env paste your bot token where `TOKEN=`</a><br/>
-  7. In .env paste your PgAdmin 4 password where `PASSWORD=`</a><br/>
-</p>
+<h2>Setting up leveling system</h2>
 
-<h2>How to download PostgreSQL</h2>
-<p>
-    Download PostgreSQL on <a href="https://www.youtube.com/watch?v=1aybOgni7lI">Macos</a>
-    <br/>
-    Download PostgreSQL on <a href="https://www.youtube.com/watch?v=C93Ed8b8Mhc">Windows</a>
-</p
+**<p>1. Install the requirements</p>**
+
+```python
+python3 -m pip install -r requirements.txt
+```
+**<p>2. Download PostgreSQL</p>**
+
+- Download PostgreSQL on <a href="https://www.youtube.com/watch?v=1aybOgni7lI">Macos</a>
+- Download PostgreSQL on <a href="https://www.youtube.com/watch?v=C93Ed8b8Mhc">Windows</a>
+
+**<p>3. Rename `.example_env--` to `.env`</p>**
+**<p>4. In .env paste your bot token where `TOKEN=`</p>**
+**<p>5. In .env paste your PgAdmin 4 password where `PASSWORD=`</p>**
