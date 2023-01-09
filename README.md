@@ -51,6 +51,6 @@ python3 -m pip install -r requirements.txt
 - Download PostgreSQL on <a href="https://www.youtube.com/watch?v=1aybOgni7lI">Macos</a>
 - Download PostgreSQL on <a href="https://www.youtube.com/watch?v=C93Ed8b8Mhc">Windows</a>
 
-**<p>3. Rename `.example_env--` to `.env`</p>**
+**<p>3. Rename `.example_env` to `.env`</p>**
 **<p>4. In .env paste your bot token where `TOKEN=`</p>**
 **<p>5. In .env paste your PgAdmin 4 password where `PASSWORD=`</p>**
