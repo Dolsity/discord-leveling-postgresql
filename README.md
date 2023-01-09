@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">
-    Discord Leveling Using PostgreSQL
+    Discord Leveling System Using PostgreSQL
 </h1>
 
 <p align="center">
