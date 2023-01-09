@@ -54,3 +54,8 @@ python3 -m pip install -r requirements.txt
 **<p>3. Rename `.example_env` to `.env`</p>**
 **<p>4. In .env paste your bot token where `TOKEN=`</p>**
 **<p>5. In .env paste your PgAdmin 4 password where `PASSWORD=`</p>**
+
+
+<h2>Card Preview:</h2>
+<p>Recommended dimensions: 900x300x</p>
+<img width="500px" src="data/images/card.png" />
