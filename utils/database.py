@@ -1,68 +1,78 @@
-from dotenv import load_dotenv
-from pymongo import MongoClient
-import os
-
+from asyncpg import Pool
 from .config import message_rate
 
-load_dotenv()
-mongo_url = os.getenv('MONGO_URL')
-cluster = MongoClient(mongo_url)
-db = cluster["leveling"]
+async def create_tables(pool: Pool):
+    async with pool.acquire() as connection:
+        # await connection.execute("DROP TABLE IF EXISTS leveling") # Uncomment this line if you have the database already created and have old data
 
-async def create_collection(guild_id):
+        await connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS leveling(
+                id BIGSERIAL PRIMARY KEY NOT NULL,
+                user_id BIGINT NOT NULL,
+                guild_id BIGINT NOT NULL,
+                xp BIGINT NOT NULL DEFAULT 5,
+                level BIGINT NOT NULL DEFAULT 0
+            )
+        """
+        )
 
-    find_collection = db.list_collection_names()
-    if f'{guild_id}' in find_collection:
-        return
+async def create_user_guild(pool: Pool, user_id, guild_id):
+    async with pool.acquire() as connection:
+        record = await connection.fetchrow(
+            "SELECT * FROM leveling WHERE user_id=$1 AND guild_id=$2", user_id, guild_id
+        )
+        if record:
+            return
 
-    db.create_collection(f'{guild_id}')
+        await connection.execute(
+            "INSERT INTO leveling(user_id, guild_id) VALUES($1, $2)", user_id, guild_id
+        )
 
-async def create_user_guild(user_id, guild_id):
-    await create_collection(guild_id)
+async def increase_xp_guild(pool: Pool, message, rate=message_rate):
+    await create_user_guild(pool, message.author.id, message.guild.id)
 
-    fetch_data = db[f'{guild_id}'].find_one({'_id': user_id})
-    if fetch_data:
-        return
-    
-    db[f'{guild_id}'].insert_one({
-        "_id": user_id,
-        "level": 0,
-        "xp": 0
-    })
+    async with pool.acquire() as connection:
+        record = await connection.fetchrow(
+            "SELECT * FROM leveling WHERE user_id=$1 AND guild_id=$2", message.author.id, message.guild.id
+        )
+        xp = record["xp"]
+        level = record["level"]
+        new_level = int((xp + rate) / 100)
 
-async def increase_xp_guild(guild_id, user_id, rate=message_rate):
-    await create_user_guild(user_id, guild_id)
+        if new_level > level:
+            new_level = new_level
+        else:
+            new_level = level
 
-    fetch_data = db[f'{guild_id}'].find_one({'_id': user_id})
+        await connection.execute(
+            "UPDATE leveling SET xp = $1, level = $2 WHERE user_id = $3 AND guild_id=$4",
+            xp + rate,
+            new_level,
+            message.author.id,
+            message.guild.id,
+        )
 
-    xp = fetch_data["xp"]
-    level = fetch_data["level"]
-    new_level = int((xp + rate) / 100)
+async def get_user_data_guild(pool: Pool, user_id, guild_id):
+    await create_user_guild(pool, user_id, guild_id)
 
-    if new_level > level:
-        new_level = new_level
-    else:
-        new_level = level
+    async with pool.acquire() as connection:
+        record = await connection.fetchrow(
+            "SELECT * FROM leveling WHERE user_id=$1 AND guild_id=$2", user_id, guild_id
+        )
+        return dict(record)
 
-    db[f'{guild_id}'].update_one(
-        {"_id": user_id}, {"$set": {"level": new_level, "xp": xp + rate}}
-    )
+async def get_rank_guild(pool: Pool, user_id, guild_id):
+    await create_user_guild(pool, user_id, guild_id)
 
-async def get_user_data_guild(user_id, guild_id):
-    await create_user_guild(user_id, guild_id)
-    fetch_data = db[f'{guild_id}'].find_one({"_id": user_id})
+    async with pool.acquire() as connection:
+        records = await connection.fetch(
+            "SELECT * FROM leveling WHERE guild_id=$1 ORDER BY xp DESC", guild_id
+        )
+        rank = 0
+        for record in records:
+            rank += 1
+            if record["user_id"] == user_id:
+                break
 
-    return dict(fetch_data)
-
-async def get_rank_guild(user_id, guild_id):
-    await create_user_guild(user_id, guild_id)
-
-    fetch_data = db[f'{guild_id}'].find_one({"_id": user_id})
-    
-    rank = 0
-    for x in fetch_data:
-        rank += 1
-        if x["user_id"] == user_id:
-            break
-
-    return rank
+        return rank

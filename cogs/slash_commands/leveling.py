@@ -19,7 +19,8 @@ class Slash_Leveling(commands.Cog):
         if not member:
             member = interaction.user
 
-        user_data = await get_user_data_guild(member.id, interaction.guild.id)
+        user_data = await get_user_data_guild(self.bot.db, member.id, interaction.guild.id)
+        # rank = await get_rank(self.bot.db, member.id, ctx.guild.id) # in case of using rank
 
         next_level_xp = (user_data["level"] + 1) * 100
         current_level_xp = user_data["level"] * 100
