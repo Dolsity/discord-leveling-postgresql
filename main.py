@@ -22,7 +22,7 @@ class Bot(commands.Bot):
 
 intents = nextcord.Intents.default()
 intents.members = True
-intents.message_content = True # Unmark for ragular commands
+intents.message_content = True
 
 
 bot = Bot(command_prefix=bot_prefix, owner_ids = set(bot_owner_ids), intents=intents, case_insensitive=True)

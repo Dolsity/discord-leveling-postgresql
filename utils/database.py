@@ -1,4 +1,5 @@
 from asyncpg import Pool
+from .config import message_rate
 
 async def create_tables(pool: Pool):
     async with pool.acquire() as connection:
@@ -28,7 +29,7 @@ async def create_user_guild(pool: Pool, user_id, guild_id):
             "INSERT INTO leveling(user_id, guild_id) VALUES($1, $2)", user_id, guild_id
         )
 
-async def increase_xp_guild(pool: Pool, message, rate=5):
+async def increase_xp_guild(pool: Pool, message, rate=message_rate):
     await create_user_guild(pool, message.author.id, message.guild.id)
 
     async with pool.acquire() as connection:
