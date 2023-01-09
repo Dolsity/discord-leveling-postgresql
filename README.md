@@ -23,6 +23,9 @@
 <a href="https://discord.com">
     <img src="https://img.shields.io/badge/Platform%20-Discord%20%E2%86%92-gray.svg?colorA=5865F2&colorB=4552d9&style=for-the-badge"/>
 </a>
+<a href="https://www.python.org/downloads/release/python-3101/">
+    <img src="https://img.shields.io/badge/Python%20-v3.10.1%20%E2%86%92-gray.svg?colorA=Ffd43b&colorB=306998&style=for-the-badge"/>
+</a>
  <a href="https://docs.nextcord.dev/en/stable/">
     <img src="https://img.shields.io/badge/Library%20-Nextcord%20%E2%86%92-gray.svg?colorA=eed142&colorB=fed142&style=for-the-badge"/>
 </a>
@@ -36,20 +39,18 @@
     <a href="https://github.com/dolsity/discord-leveling/issues/new/choose">Request Feature</a>
 </p>
 
-<h2>Setup leveling system</h2>
-<p>
-  1. Requires python version 3.10.1</a><br/>
-  2. Run `python3 -m pip install -r requirements.txt` in your terminal</a><br/>
-  3. Install PostgreSQL</a><br/>
-  4. Create database named levels</a><br/>
-  5. Rename `.example_env--` to `.env`</a><br/>
-  6. In .env paste your bot token where `TOKEN=`</a><br/>
-  7. In .env paste your PgAdmin 4 password where `PASSWORD=`</a><br/>
-</p>
+<h2>Setting up leveling system</h2>
 
-<h2>How to download PostgreSQL</h2>
-<p>
-    Download PostgreSQL on <a href="https://www.youtube.com/watch?v=1aybOgni7lI">Macos</a>
-    <br/>
-    Download PostgreSQL on <a href="https://www.youtube.com/watch?v=C93Ed8b8Mhc">Windows</a>
-</p
+**<p>1. Install the requirements</p>**
+
+```python
+python3 -m pip install -r requirements.txt
+```
+**<p>2. Download PostgreSQL</p>**
+
+- Download PostgreSQL on <a href="https://www.youtube.com/watch?v=1aybOgni7lI">Macos</a>
+- Download PostgreSQL on <a href="https://www.youtube.com/watch?v=C93Ed8b8Mhc">Windows</a>
+
+**<p>3. Rename `.example_env--` to `.env`</p>**
+**<p>4. In .env paste your bot token where `TOKEN=`</p>**
+**<p>5. In .env paste your PgAdmin 4 password where `PASSWORD=`</p>**
