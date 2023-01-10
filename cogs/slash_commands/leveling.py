@@ -12,7 +12,7 @@ class Slash_Leveling(commands.Cog):
     @slash_command(
         name="rank", description="Check your rank"
     )
-    async def rank(self, interaction : Interaction, member: Member = None):
+    async def rank(self, interaction : Interaction, member : Member = None):
 
         await interaction.response.defer()
 
@@ -29,7 +29,6 @@ class Slash_Leveling(commands.Cog):
 
         percentage = (xp_need / 100) * xp_have
 
-        ## Rank card
         background = Editor("data/images/image.jpg")
         profile = await load_image_async(str(member.display_avatar))
 

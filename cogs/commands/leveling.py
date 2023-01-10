@@ -10,7 +10,7 @@ class Level(commands.Cog):
 
     # Check your rank
     @commands.command()
-    async def rank(self, interaction : Context, member: Member = None):
+    async def rank(self, interaction : Context, member : Member = None):
         if not member:
             member = interaction.author
 
