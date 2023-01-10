@@ -4,10 +4,8 @@ import asyncpg
 from nextcord.ext import commands
 from utils import increase_xp_guild, create_tables, bot_owner_ids, bot_prefix
 import nextcord
-from nextcord import Intents
 from extensions import initial_extensions
 
-    
 class Bot(commands.Bot):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
