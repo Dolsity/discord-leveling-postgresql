@@ -8,12 +8,10 @@ class Slash_Leveling(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # Check your rank
     @slash_command(
         name="rank", description="Check your rank"
     )
     async def rank(self, interaction : Interaction, member : Member = None):
-
         await interaction.response.defer()
 
         if not member:
