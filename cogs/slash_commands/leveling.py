@@ -8,7 +8,6 @@ class Slash_Leveling(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # Check your rank
     @slash_command(
         name="rank", description="Check your rank"
     )
