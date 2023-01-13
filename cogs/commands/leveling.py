@@ -8,7 +8,6 @@ class Level(commands.Cog):
     def __init__(self, bot) -> None:
         self.bot = bot
 
-    # Check your rank
     @commands.command()
     async def rank(self, interaction : Context, member : Member = None):
         if not member:
